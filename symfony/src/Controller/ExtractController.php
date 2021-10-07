@@ -27,10 +27,12 @@ class ExtractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstr
         $raw_file->move($destination, $filename);
         $logger->info("Saved {$filename} to public storage");
 
+        $imglink = '/uploads/' . $filename;
+
         $content = (new TesseractOCR($destination . '/' . $filename))
             ->lang('eng', 'ron', 'rus')
             ->run();
 
-        return $this->render('result.html.twig', ['content' => $content, 'filename' => $filename]);
+        return $this->render('result.html.twig', ['content' => $content, 'filename' => $filename, 'imglink' => $imglink]);
     }
 }
