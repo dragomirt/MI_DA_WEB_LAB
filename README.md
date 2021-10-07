@@ -5,6 +5,10 @@ Image text extractor
 - Tema: "Extragerea textului din imagini"
 - Based on: https://github.com/clipstard/project
 
+![alt text](homepage.png)
+
+![alt text](result.png)
+
 ### Pre-requisites
 
 * clone this repository under C:/Users/`user`/Projects/ folder 
