@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExtractController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
-    /** @Route(name="extract", path="/extract")  */
+    /** @Route(name="extract", path="/extract", methods={"POST"})  */
     public function __invoke()
     {
 //        $em = $this->getDoctrine()->getManager();

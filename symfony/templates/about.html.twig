@@ -77,18 +77,19 @@
                 <div>
                     <h3 class="float-md-start mb-0">Extractor</h3>
                     <nav class="nav nav-masthead justify-content-center float-md-end">
-                        <a class="nav-link active" aria-current="page" href="/">Extragere</a>
-                        <a class="nav-link" href="/about">Detalii</a>
+                        <a class="nav-link" aria-current="page" href="/">Extragere</a>
+                        <a class="nav-link active" aria-current="page" href="/about">Detalii</a>
                     </nav>
                 </div>
             </header>
 
             <main class="px-3">
                 <h1>Extragerea Textului din imagini</h1>
-                <p class="lead">Incarca orice imagine de tip <b>.png</b> sau <b>.jpg</b> si ruleaza extragerea</p>
-                <form class="p-4 d-flex flex-row justify-content-center align-items-center" style="gap: 25px;" action="{{ path('extract') }}" method="POST">
-                    <div class="flex-grow-1">
-                        <input class="form-control" type="file" id="form_file" accept="image/png|image/jpg|image/jpeg">
+                <p class="lead">Incarca orice imagine de tip png sau jpg si ruleaza extragerea</p>
+                <form action="" method="POST">
+                    <div class="mb-3">
+                        <label for="form_file" class="image">Imagine de tip .png sau .jpg</label>
+                        <input class="form-control" type="file" id="form_file">
                     </div>
                     <button type="submit" class="btn btn-primary">Incarca!</button>
                 </form>
