@@ -86,9 +86,9 @@
             <main class="px-3">
                 <h1>Extragerea Textului din imagini</h1>
                 <p class="lead">Incarca orice imagine de tip <b>.png</b> sau <b>.jpg</b> si ruleaza extragerea</p>
-                <form class="p-4 d-flex flex-row justify-content-center align-items-center" style="gap: 25px;" action="{{ path('extract') }}" method="POST">
+                <form class="p-4 d-flex flex-row justify-content-center align-items-center" style="gap: 25px;" action="{{ path('extract') }}" method="POST" enctype="multipart/form-data">
                     <div class="flex-grow-1">
-                        <input class="form-control" type="file" id="form_file" accept="image/png|image/jpg|image/jpeg">
+                        <input class="form-control" type="file" id="file_to_extract" name="file_to_extract" accept="image/png|image/jpg|image/jpeg">
                     </div>
                     <button type="submit" class="btn btn-primary">Incarca!</button>
                 </form>
