@@ -23,13 +23,14 @@ class ExtractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstr
 
         // Saving file
         $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
-        $raw_file->move($destination, $raw_file->getClientOriginalName());
-        $logger->info("Saved {$raw_file->getClientOriginalName()} to public storage");
+        $filename = $raw_file->getClientOriginalName();
+        $raw_file->move($destination, $filename);
+        $logger->info("Saved {$filename} to public storage");
 
-        dd((new TesseractOCR($destination . '/' . $raw_file->getClientOriginalName()))
+        $content = (new TesseractOCR($destination . '/' . $filename))
             ->lang('eng', 'ron', 'rus')
-            ->run());
+            ->run();
 
-        return new JsonResponse(['extracted'=> true]);
+        return $this->render('result.html.twig', ['content' => $content, 'filename' => $filename]);
     }
 }
