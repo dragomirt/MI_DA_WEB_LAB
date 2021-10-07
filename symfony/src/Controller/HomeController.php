@@ -11,13 +11,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class HomeController extends AbstractController
 {
 
-    /** @Route(name="home", path="/home")  */
+    /** @Route(name="home", path="/")  */
     public function __invoke()
     {
-        $em = $this->getDoctrine()->getManager();
-        /** @var ProductRepository $repo */
-        $repo = $em->getRepository(Product::class);
-        $repo->findAll();
-        return new JsonResponse(['succes'=> true]);
+        return $this->render("home.html.twig");
     }
 }

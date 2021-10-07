@@ -1,6 +1,11 @@
-# project_back
+Image text extractor
 
-## Pre-requisites
+- Curs: Dezvoltarea aplicatiilor Web
+- Lucrarea de laborator
+- Tema: "Extragerea textului din imagini"
+- Based on: https://github.com/clipstard/project
+
+### Pre-requisites
 
 * clone this repository under C:/Users/`user`/Projects/ folder 
  
