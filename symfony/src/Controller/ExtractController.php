@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use thiagoalessio\TesseractOCR\TesseractOCR;
 
 class ExtractController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
@@ -25,6 +26,10 @@ class ExtractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstr
         $raw_file->move($destination, $raw_file->getClientOriginalName());
         $logger->info("Saved {$raw_file->getClientOriginalName()} to public storage");
 
+        dd((new TesseractOCR($destination . '/' . $raw_file->getClientOriginalName()))
+            ->allowlist(range('A', 'Z'))
+            ->lang('eng', 'ron', 'rus')
+            ->run());
 
         return new JsonResponse(['extracted'=> true]);
     }
