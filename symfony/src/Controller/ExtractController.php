@@ -27,7 +27,6 @@ class ExtractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstr
         $logger->info("Saved {$raw_file->getClientOriginalName()} to public storage");
 
         dd((new TesseractOCR($destination . '/' . $raw_file->getClientOriginalName()))
-            ->allowlist(range('A', 'Z'))
             ->lang('eng', 'ron', 'rus')
             ->run());
 

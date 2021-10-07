@@ -50,6 +50,8 @@ RUN apt-get -yqq update && \
                                                  libfcgi-bin libxrender1 libfontconfig1 \
                                                  libx11-dev libjpeg62 libxtst6 wget
 
+RUN apt-get install -y tesseract-ocr tesseract-ocr-ron tesseract-ocr-rus
+
 # ------------------------------
 # install PHP extensions
 # ------------------------------
