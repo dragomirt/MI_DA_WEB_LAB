@@ -1,0 +1,55 @@
+version: '3'
+services:
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+      args:
+        WWWGROUP: '${WWWGROUP}'
+    image: dragomirt/app
+    platform: linux/arm64/v8
+    ports:
+      - '${APP_PORT:-80}:80'
+    environment:
+      WWWUSER: '${WWWUSER}'
+    volumes:
+      - '.:/var/www/html'
+    networks:
+      - imagetotext
+    depends_on:
+      - db
+      - redis
+  db:
+    image: 'mariadb:10.6.4'
+    platform: linux/arm64/v8
+    ports:
+      - '${FORWARD_DB_PORT:-3306}:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - 'imagetotextmariadb:/var/lib/mysql'
+    networks:
+      - imagetotext
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping"]
+
+  redis:
+    image: 'redis:6.2'
+    platform: linux/arm64/v8
+    networks:
+      - imagetotext
+networks:
+  imagetotext:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.33.10/24
+          gateway: 192.168.33.11
+volumes:
+  imagetotextmariadb:
+    driver: local
