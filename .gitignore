@@ -1,16 +1,3 @@
-
-###> symfony/framework-bundle ###
-/symfony/.env.dist
-/symfony/.env.local
-/symfony/.env.local.php
-/symfony/.env.*.local
-/symfony/public/bundles/
-/symfony/var/
-/symfony/vendor/
-/symfony/reports/*
-!/symfony/reports/.gitkeep
-###< symfony/framework-bundle ###
-
 # IDEs and editors
 /.idea
 .project
@@ -33,3 +20,4 @@ Thumbs.db
 !.gitattributes
 
 # Process
+api/mysql
