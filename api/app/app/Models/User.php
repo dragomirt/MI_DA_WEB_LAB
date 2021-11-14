@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Orchid\Platform\Models\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    use HasApiTokens, Notifiable;
+
     /**
      * The attributes that are mass assignable.
      *
