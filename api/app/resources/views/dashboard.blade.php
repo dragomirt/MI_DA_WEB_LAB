@@ -31,7 +31,7 @@
                             @foreach($tokens as $token)
                                 <tr>
                                     <td>{{ $token->token }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($token->last_used_at)->diffForHumans() }}</td>
+                                    <td>{{ $token->last_used_at ? \Carbon\Carbon::parse($token->last_used_at)->diffForHumans() : '—' }}</td>
                                     <td>{{ \Carbon\Carbon::parse($token->created_at)->diffForHumans() }}</td>
                                 </tr>
                             @endforeach
