@@ -18,26 +18,17 @@
                             <i class="fas fa-key mr-2"></i>Generate New Token</button>
                     </form>
 
+                    @if (\Illuminate\Support\Facades\Session::has('new_token'))
+                        {{ \Illuminate\Support\Facades\Session::get('new_token') }}
+                    @endif
 
-                    <table class="table-auto w-full">
-                        <thead>
-                        <tr>
-                            <th class="text-left">Token</th>
-                            <th class="text-left">Last Used</th>
-                            <th class="text-left">Created</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($tokens as $token)
-                                <tr>
-                                    <td>{{ $token->token }}</td>
-                                    <td>{{ $token->last_used_at ? \Carbon\Carbon::parse($token->last_used_at)->diffForHumans() : '—' }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($token->created_at)->diffForHumans() }}</td>
-                                </tr>
-                            @endforeach
+                    @if($token)
+                        You have an active token.
 
-                        </tbody>
-                    </table>
+                        @if(null !== $token->last_used_at)
+                            Last time it has been used <b>{{ \Carbon\Carbon::parse($token->last_used_at)->diffForHumans() }}</b>.
+                        @endif
+                    @endif
                 </div>
             </div>
         </div>

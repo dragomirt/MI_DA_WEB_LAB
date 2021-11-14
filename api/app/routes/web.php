@@ -25,6 +25,7 @@ Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'ind
 Route::post('/tokens/create', function (Request $request) {
     $token = $request->user()->generateApiToken();
 
+    \Illuminate\Support\Facades\Session::flash("new_token", $token);
     return redirect()->route('dashboard');
 })->name('generate_token');
 

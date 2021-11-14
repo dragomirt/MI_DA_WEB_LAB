@@ -17,6 +17,13 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
+        tap($app->make('config'), function ($config) {
+            $config->set('app.url', 'http://laravel.test');
+            $config->set('database.default', 'dusk_testing');
+            $config->set('mail.driver', 'log');
+            $config->set('laravel2step.laravel2stepDatabaseConnection', 'dusk_testing');
+        });
+
         return $app;
     }
 }

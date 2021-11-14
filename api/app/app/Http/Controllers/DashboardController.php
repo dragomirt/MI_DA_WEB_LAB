@@ -13,6 +13,6 @@ class DashboardController extends Controller
 
         $files = $user->files();
 
-        return view('dashboard', ['user' => $user, 'tokens' => $user->tokens, 'files' => $files]);
+        return view('dashboard', ['user' => $user, 'token' => $user->tokens->last(), 'files' => $files]);
     }
 }
