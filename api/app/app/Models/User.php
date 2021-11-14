@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Model
+class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
 {
     use HasApiTokens, Authenticatable, Notifiable, HasFactory;
 
@@ -83,5 +83,10 @@ class User extends Model
     public function documents()
     {
         return $this->hasMany(Attachment::class)->where('group','documents');
+    }
+
+    public function files()
+    {
+
     }
 }
