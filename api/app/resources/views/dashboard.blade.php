@@ -49,6 +49,7 @@
                         <tr>
                             <th class="text-left">File</th>
                             <th class="text-left">Content</th>
+                            <th class="text-left">Processed</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -64,6 +65,7 @@
                                     @endif
 
                                 </td>
+                                <td>{{ \Carbon\Carbon::parse($file->created_at)->diffForHumans() }}</td>
                             </tr>
                         @endforeach
                         </tbody>
