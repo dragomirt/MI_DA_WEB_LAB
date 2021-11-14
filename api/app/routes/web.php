@@ -29,4 +29,6 @@ Route::post('/tokens/create', function (Request $request) {
     return redirect()->route('dashboard');
 })->name('generate_token');
 
+Route::get('/file/{id}', [\App\Http\Controllers\FileContentController::class, 'show'])->name('file_content');
+
 require __DIR__.'/auth.php';

@@ -42,13 +42,32 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <h1 class="text-xl">Files</h1>
+                    <h1 class="text-xl">Files <b>({{ $files->count() }})</b></h1>
 
-                    <ul>
+                    <table class="table-auto w-full mt-2">
+                        <thead>
+                        <tr>
+                            <th class="text-left">File</th>
+                            <th class="text-left">Content</th>
+                        </tr>
+                        </thead>
+                        <tbody>
                         @foreach($files as $file)
-                            {{ $file }}
+                            <tr>
+                                <td>{{ $file->file_name }}</td>
+                                <td>
+
+                                    @if (null !== $file->content)
+                                        <a href="{{ route('file_content', ['id' => $file->content->id]) }}">Show</a>
+                                    @else
+                                        –
+                                    @endif
+
+                                </td>
+                            </tr>
                         @endforeach
-                    </ul>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
