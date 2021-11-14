@@ -77,6 +77,12 @@ class UserEditScreen extends Screen
     public function commandBar(): array
     {
         return [
+            Button::make(__('Generate API Key'))
+                ->icon('key')
+                ->confirm('You can revert to your original state by logging out.')
+                ->method('generateApiKey')
+                ->canSee($this->user->exists),
+
             Button::make(__('Impersonate user'))
                 ->icon('login')
                 ->confirm('You can revert to your original state by logging out.')
@@ -221,5 +227,13 @@ class UserEditScreen extends Screen
         Toast::info(__('You are now impersonating this user'));
 
         return redirect()->route(config('platform.index'));
+    }
+
+    public function generateApiKey(User $user) {
+        $token = $user->createToken('api_token');
+
+        Toast::info($token->plainTextToken);
+
+        return redirect()->route('platform.systems.users');
     }
 }
