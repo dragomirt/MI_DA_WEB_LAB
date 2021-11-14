@@ -19,9 +19,13 @@
                     </form>
 
                     @if (\Illuminate\Support\Facades\Session::has('new_token'))
-                        {{ \Illuminate\Support\Facades\Session::get('new_token') }}
+
+                        It is shown only once. Please copy it to a safe place.
+                        <br>
+                        <b>{{ \Illuminate\Support\Facades\Session::get('new_token') }}</b>
                     @endif
 
+                    <br><br>
                     @if($token)
                         You have an active token.
 
