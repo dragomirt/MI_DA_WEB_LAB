@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\File;
 
-class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
+class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable, HasMedia
 {
-    use HasApiTokens, Authenticatable, Notifiable, HasFactory;
+    use HasApiTokens, Authenticatable, Notifiable, HasFactory, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -80,13 +83,14 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
         return $token->plainTextToken;
     }
 
-    public function documents()
-    {
-        return $this->hasMany(Attachment::class)->where('group','documents');
-    }
-
     public function files()
     {
+        return $this->getMedia('files');
+    }
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('files')
+            ->acceptsMimeTypes(['image/*', 'application/pdf']);
     }
 }

@@ -11,6 +11,8 @@ class DashboardController extends Controller
             return response('', \Illuminate\Http\Response::HTTP_FORBIDDEN);
         }
 
-        return view('dashboard', ['user' => $user, 'tokens' => $user->tokens]);
+        $files = $user->files();
+
+        return view('dashboard', ['user' => $user, 'tokens' => $user->tokens, 'files' => $files]);
     }
 }

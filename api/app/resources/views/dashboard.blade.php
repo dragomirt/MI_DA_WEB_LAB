@@ -49,7 +49,11 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h1 class="text-xl">Files</h1>
 
-
+                    <ul>
+                        @foreach($files as $file)
+                            {{ $file }}
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>
