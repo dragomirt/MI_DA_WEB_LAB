@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/tokens/create', function (Request $request) {
-    $token = $request->user()->createToken($request->token_name);
+Route::get('/', function () {
+    return view('welcome');
+});
 
-    return ['token' => $token->plainTextToken];
-})->middleware('auth:web');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';

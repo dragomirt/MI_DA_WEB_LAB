@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Orchid\Platform\Models\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use HasApiTokens, Notifiable, HasFactory;
+    use HasApiTokens, Authenticatable, Notifiable, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -77,5 +78,10 @@ class User extends Authenticatable
     public function generateApiToken(): string {
         $token = $this->createToken('api_token');
         return $token->plainTextToken;
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(Attachment::class)->where('group','documents');
     }
 }
