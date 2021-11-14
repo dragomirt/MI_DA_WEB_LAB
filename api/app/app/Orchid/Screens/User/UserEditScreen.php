@@ -15,6 +15,7 @@ use Orchid\Access\UserSwitch;
 use Orchid\Platform\Models\User;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Screen;
 use Orchid\Support\Color;
 use Orchid\Support\Facades\Layout;
@@ -230,9 +231,14 @@ class UserEditScreen extends Screen
     }
 
     public function generateApiKey(User $user) {
-        $token = $user->createToken('api_token');
+        $dbUser = \App\Models\User::find($user->id)->first();
+        if (null === $dbUser) {
+            Toast::error("No user found!");
+            return redirect()->route('platform.systems.users');
+        }
 
-        Toast::info($token->plainTextToken);
+        $token = $dbUser->generateApiToken();
+        Toast::info($token);
 
         return redirect()->route('platform.systems.users');
     }
