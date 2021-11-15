@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ChakraProvider,
   Box,
@@ -7,49 +7,24 @@ import {
   VStack,
   Code,
   Grid,
-  theme,
   Button,
   Container,
   Input,
+  ColorModeScript, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Icon, useDisclosure,
+  createStandaloneToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
 import config from './config';
-import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-
-
-function FileDrop() {
-  const onDrop = useCallback(acceptedFiles => {
-    let formData = new FormData();
-    formData.append('file', acceptedFiles[0]);
-
-    fetch(config.api_url + '/api/scan', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'multipart/form-data',
-        'Authorization': 'Bearer ' + config.api_key,
-      },
-      mode: 'no-cors',
-      body: formData,
-    }).then((res) => {
-      console.log(res);
-    });
-  }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
-  return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} />
-      {
-        isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, or click to select files</p>
-      }
-    </div>
-  );
-}
+import theme from './theme';
+import { RepeatIcon } from '@chakra-ui/icons'
+import moment from 'moment';
 
 const FileUploader = ({ onFileSelectError, onFileSelectSuccess }) => {
   const fileInput = useRef(null);
@@ -74,9 +49,27 @@ const FileUploader = ({ onFileSelectError, onFileSelectSuccess }) => {
 
 function App() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [userFiles, setUserFiles] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [currentFile, setCurrentFile] = useState(null);
+  const toast = createStandaloneToast()
+
+  const getUserFiles = () => {
+    let formData = new FormData();
+    formData.append('file', selectedFile);
+
+    axios({
+      url: config.api_url + '/api/files',
+      method: 'get',
+      headers: {
+        'Authorization': 'Bearer ' + config.api_key,
+        'Accept': 'application/json',
+      },
+      mode: 'no-cors',
+    }).then((res) => { console.log(res.data); setUserFiles(res.data.files);  })
+  }
 
   const submitFileScan = () => {
-
     let formData = new FormData();
     formData.append('file', selectedFile);
 
@@ -93,16 +86,34 @@ function App() {
       data: formData,
     }).then((res) => {
       console.log(res);
+      console.log(selectedFile);
+      if (204 === res.status) {
+        toast({
+          title: "Success",
+          description: selectedFile.name + ' has just been processed! Please refresh!',
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        })
+      }
+
+      toast({
+        title: "Error",
+        description: 'Something went wrong :(',
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      })
     });
   };
 
   return (
     <ChakraProvider theme={theme}>
-      <Container>
+      <Container maxW="container.xl">
         <Box textAlign='center' fontSize='xl'>
           <Grid minH='100vh' p={3}>
             <VStack spacing={8}>
-              <Text>{config.api_key}</Text>
+              <Text>{config.api_key && config.api_url ? 'Config OK' : 'Config Not OK'}</Text>
 
               <FileUploader
                 onFileSelectSuccess={(file) => setSelectedFile(file)}
@@ -115,9 +126,58 @@ function App() {
               }}>
                 Scan!
               </Button>
+
+              <Button colorScheme='green' size='md' onClick={() => {
+                getUserFiles();
+              }}>
+                <Icon as={RepeatIcon} />
+              </Button>
             </VStack>
+
+
+            <Table variant="simple">
+              <TableCaption>Uploaded files</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>Filename</Th>
+                  <Th>Content</Th>
+                  <Th>Created At</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                { userFiles && userFiles.map((item) => {
+                  return (
+                    <Tr>
+                      <Td>{ item.file_name }</Td>
+                      <Td><Button onClick={() => {onOpen(); setCurrentFile(item)}}>View</Button></Td>
+                      <Td>{ moment(item.updated_at).format('lll') }</Td>
+                    </Tr>
+                  )
+                }) }
+              </Tbody>
+            </Table>
+
           </Grid>
         </Box>
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent maxW='8xl'>
+            <ModalHeader>File Content</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <pre>
+              { currentFile ? currentFile.content : '' }
+              </pre>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Container>
     </ChakraProvider>
   );
