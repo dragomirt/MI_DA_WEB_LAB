@@ -1,6 +1,8 @@
+console.log(process.env);
+
 const data = {
-  'api_url': 'http://localhost:8080',
-  'api_key': ''
+  'api_url': process.env.REACT_APP_API_URL,
+  'api_key': process.env.REACT_APP_API_KEY
 }
 
 export default data;
