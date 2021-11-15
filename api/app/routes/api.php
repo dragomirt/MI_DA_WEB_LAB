@@ -21,4 +21,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/scan', [\App\Http\Controllers\ScanController::class, 'scan']);
     Route::get('/file/{id}', [\App\Http\Controllers\FileContentController::class, 'show']);
+    Route::get('/files', [\App\Http\Controllers\UserController::class, 'files']);
 });
